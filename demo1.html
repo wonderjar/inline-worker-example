@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo1</title>
+</head>
+<body>
+
+</body>
+
+<script type="application/javascript">
+
+  var blob = new Blob([
+    "onmessage = function(e) { postMessage('msg from worker'); }"]);
+
+  // Obtain a blob URL reference to our worker 'file'.
+  var blobURL = window.URL.createObjectURL(blob);
+
+  var worker = new Worker(blobURL);
+  worker.onmessage = function(e) {
+    console.log('result', e, e.data);
+  };
+  worker.postMessage({}); // Start the worker.
+</script>
+
+</html>

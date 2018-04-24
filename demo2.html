@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo2</title>
+</head>
+<body>
+
+</body>
+
+<script type="application/javascript">
+
+  var blob = new Blob([
+    `
+    onmessage = function(e) {
+        setInterval(function() {
+            let xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                postMessage(xhr.responseText);
+            };
+            xhr.open('GET', 'http://localhost:63342/inline-worker-example/demo2.html', true);
+            xhr.send();
+        }, 5000)
+    }
+    `
+    ]);
+
+  // Obtain a blob URL reference to our worker 'file'.
+  var blobURL = window.URL.createObjectURL(blob);
+
+  var worker = new Worker(blobURL);
+  worker.onmessage = function(e) {
+    console.log('result', e, e.data);
+  };
+  worker.postMessage({}); // Start the worker.
+</script>
+
+</html>
